@@ -2,7 +2,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from ...models import Card, DeactivatedCard
+from ...models.cards import Card
+from ...models.deactivated_cards import DeactivatedCard
 from django.utils import timezone
 from django.contrib.auth import get_user_model
    

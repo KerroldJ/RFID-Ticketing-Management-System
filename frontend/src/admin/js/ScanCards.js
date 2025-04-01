@@ -33,127 +33,126 @@ const handleScanCardClick = (setCards) => {
         });
     };
 
-    const processScan = (cardId, setCards) => {
-        fetch(`${domain}/api/check-status/${cardId}/`)
-            .then((response) => response.json())
-            .then((cardData) => {
-                if (cardData.type === "VIP" && !cardData.office_name) {
-                    Swal.fire({
-                        title: "Create Office Name",
-                        input: "text",
-                        inputPlaceholder: "Enter office name",
-                        showCancelButton: true,
-                        confirmButtonText: "Save",
-                        showConfirmButton: true,
-                        preConfirm: () => {
-                            const officeName = Swal.getInput().value;
-                            if (!officeName) {
-                                Swal.showValidationMessage("Office name cannot be empty!");
-                                return false;
-                            }
-                            return officeName;
-                        },
-                    }).then((result) => {
-                        if (result.isConfirmed && result.value) {
-                            saveOfficeName(cardId, result.value, setCards);
+const processScan = (cardId, setCards) => {
+    fetch(`${domain}/api/check-status/${cardId}/`)
+        .then((response) => response.json())
+        .then((cardData) => {
+            if (cardData.type === "VIP" && !cardData.office_name) {
+                Swal.fire({
+                    title: "Create Office Name",
+                    input: "text",
+                    inputPlaceholder: "Enter office name",
+                    showCancelButton: true,
+                    confirmButtonText: "Save",
+                    showConfirmButton: true,
+                    preConfirm: () => {
+                        const officeName = Swal.getInput().value;
+                        if (!officeName) {
+                            Swal.showValidationMessage("Office name cannot be empty!");
+                            return false;
                         }
-                    });
-                } else {
-                    activateCard(cardId, setCards);
-                }
-            })
-            .catch((error) => {
-                Swal.fire("Error", "Something went wrong: " + error.message, "error");
-                openScanModal();
-            });
-    };
-
-
-    const saveOfficeName = (cardId, officeName, setCards) => {
-        if (!officeName) {
-            Swal.fire("Error", "Office name cannot be empty!", "error");
+                        return officeName;
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed && result.value) {
+                        saveOfficeName(cardId, result.value, setCards);
+                    }
+                });
+            } else {
+                activateCard(cardId, setCards);
+            }
+        })
+        .catch((error) => {
+            Swal.fire("Error", "Something went wrong: " + error.message, "error");
             openScanModal();
-            return;
-        }
+        });
+};
 
-        const localDate = new Date();
-        const formattedDate = localDate.toISOString().split('T')[0];
-        const formattedTime = localDate.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 
-        fetch(`${domain}/api/activate/${cardId}/`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                created_date: formattedDate,
-                created_time: formattedTime,
-                office_name: officeName,
-            }),
-        })
-            .then((response) => response.json())
-            .then((saveData) => {
-                if (saveData.success) {
-                    Swal.fire({
-                        title: "Success!",
-                        text: "Office name updated and card activated!",
-                        icon: "success",
-                        timer: 1000,
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                    }).then(() => openScanModal());
-                    fetchUpdatedCardData(setCards);
-                } else {
-                    Swal.fire("Error", saveData.message, "error");
-                    openScanModal();
-                }
-            })
-            .catch((error) => {
-                Swal.fire("Error", "Something went wrong: " + error.message, "error");
+const saveOfficeName = (cardId, officeName, setCards) => {
+    if (!officeName) {
+        Swal.fire("Error", "Office name cannot be empty!", "error");
+        openScanModal();
+        return;
+    }
+
+    const localDate = new Date();
+    const formattedDate = localDate.toISOString().split('T')[0];
+    const formattedTime = localDate.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+    fetch(`${domain}/api/activate/${cardId}/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            created_date: formattedDate,
+            created_time: formattedTime,
+            office_name: officeName,
+        }),
+    })
+        .then((response) => response.json())
+        .then((saveData) => {
+            if (saveData.success) {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Office name updated and card activated!",
+                    icon: "success",
+                    timer: 1000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                }).then(() => openScanModal());
+                fetchUpdatedCardData(setCards);
+            } else {
+                Swal.fire("Error", saveData.message, "error");
                 openScanModal();
-            });
-    };
-
-    const fetchUpdatedCardData = (setCards) => {
-        fetch(`${domain}/api/cards/`)
-            .then((response) => response.json())
-            .then((updatedData) => {
-                setCards(updatedData);
-            })
-            .catch((error) => Swal.fire("Error", "Error fetching updated data: " + error.message, "error"));
-    };
-
-    const activateCard = (cardId, setCards) => {
-        const localDate = new Date();
-        const formattedDate = localDate.toISOString().split('T')[0];
-        const formattedTime = localDate.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-
-        fetch(`${domain}/api/activate/${cardId}/`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ created_date: formattedDate, created_time: formattedTime }),
+            }
         })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.success) {
-                    Swal.fire({
-                        title: "Activated!",
-                        text: data.message,
-                        icon: "success",
-                        timer: 1000,
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                    }).then(() => openScanModal());
-                    fetchUpdatedCardData(setCards);
-                } else {
-                    Swal.fire("Error", data.message, "error");
-                    openScanModal();
-                }
-            })
-            .catch((error) => {
-                Swal.fire("Error", "Something went wrong: " + error.message, "error");
-                openScanModal();
-            });
-    };
+        .catch((error) => {
+            Swal.fire("Error", "Something went wrong: " + error.message, "error");
+            openScanModal();
+        });
+};
 
+const fetchUpdatedCardData = (setCards) => {
+    fetch(`${domain}/api/list-cards/`)
+        .then((response) => response.json())
+        .then((updatedData) => {
+            setCards(updatedData);
+        })
+        .catch((error) => Swal.fire("Error", "Error fetching updated data: " + error.message, "error"));
+};
+
+const activateCard = (cardId, setCards) => {
+    const localDate = new Date();
+    const formattedDate = localDate.toISOString().split('T')[0];
+    const formattedTime = localDate.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+    fetch(`${domain}/api/activate/${cardId}/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ created_date: formattedDate, created_time: formattedTime }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                Swal.fire({
+                    title: "Activated!",
+                    text: data.message,
+                    icon: "success",
+                    timer: 1000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                }).then(() => openScanModal());
+                fetchUpdatedCardData(setCards);
+            } else {
+                Swal.fire("Error", data.message, "error");
+                openScanModal();
+            }
+        })
+        .catch((error) => {
+            Swal.fire("Error", "Something went wrong: " + error.message, "error");
+            openScanModal();
+        });
+};
     openScanModal();
 };
 

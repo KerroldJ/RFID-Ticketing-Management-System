@@ -1,8 +1,7 @@
-from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from ...models import Card
-from ...serializers import CardSerializer
+from ...models.cards import Card
+from ...serializer.card_serializer import CardSerializer
 
 @api_view(['GET'])
 def card_list(request):

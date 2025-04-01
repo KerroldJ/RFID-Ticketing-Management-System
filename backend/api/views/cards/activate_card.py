@@ -2,9 +2,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.utils import timezone
-
-from ...models import Card
-from ...utils import create_log
+from ...models.cards import Card
+from ..logs.create_log import create_log
 
 
 

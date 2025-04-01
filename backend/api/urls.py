@@ -16,10 +16,11 @@ from api.views.cards.activate_card import reactivate_card
 from api.views.cards.autodeactivate_cards import autodeactivate_cards
 from api.views.cards.deactivate_all_cards import deactivate_all_cards
 
+from api.views.logs.create_log import create_log
+from api.views.logs.list_log import list_logs
+from api.views.logs.delete_log import delete_logs
+
 from api.views.weekly_stats import weekly_deactivated_cards
-from api.views.logs import log_list
-
-
 
 urlpatterns = [
     path('login/', login_view, name='login'),
@@ -36,9 +37,11 @@ urlpatterns = [
     path('deactivate_all_cards/', deactivate_all_cards, name='all_cards_deactivate'),
     path('autodeactivate_cards/', autodeactivate_cards, name='deactivate_all_cards'),
     path('activate/<str:card_id>/', reactivate_card, name='activate_card'),
-
     
+    path('create-logs/', create_log, name='card-logs'),
+    path('list-logs/', list_logs, name='list-logs'),
+    path('delete-logs/', delete_logs, name='delete-logs'),
+
     path('weekly-clients/', weekly_deactivated_cards, name='weekly_deactivated_cards'),
-    path('card-logs/', log_list, name='card-logs'),
 ]
 

@@ -52,7 +52,7 @@ function StaffDashboard() {
 // Fetch cards from backend initially
   const fetchCards = async () => {
     try {
-      const response = await fetch(`${domain}/api/cards/`);
+      const response = await fetch(`${domain}/api/list-cards/`);
       if (response.ok) {
         const data = await response.json();
         setCards(data);

@@ -5,10 +5,7 @@ import handleScanCardClick from './js/ScanCards';
 import handleAddButtonClick from './js/addCards';
 import useAutoDeactivateCards from './js/AutoDeactivateCards'
 import useFetchCards from "./js/FetchCards";
-
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import { domain } from "../utils";
+import { handleDeleteCard } from "./js/deleteCard";
 
 
 function ManageCards() {
@@ -34,34 +31,9 @@ function ManageCards() {
   useAutoDeactivateCards();
   useFetchCards(setCards);
 //==================================================================//
-const handleDelete = (cardId) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: `You are about to delete card ${cardId}`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios.delete(`${domain}/api/delete-card/${cardId}/`).then(() => {
-            setCards(cards.filter(card => card.card_id !== cardId));
-            Swal.fire(
-              'Deleted!',
-              'The card has been deleted.',
-              'success'
-            );
-          }).catch((error) => {
-            console.error('Error deleting card:', error);
-            Swal.fire(
-              'Error!',
-              'Failed to delete the card.',
-              'error'
-            );
-          });
-      }
-    });
+
+  const handleDelete = (cardId) => {
+    handleDeleteCard(cardId, cards, setCards);
   };
 
 //=================================================================//
@@ -128,9 +100,13 @@ const handleDelete = (cardId) => {
                       <td className="text-center p-3">{card.date}</td>
                       <td className="text-center p-3">{card.time}</td>
                       <td className="text-center p-3">
-                        <button onClick={() => handleDelete(card.card_id)} className="text-red-500 hover:text-red-700 focus:outline-none" title="Delete Card">
+                        <button
+                          onClick={() => handleDelete(card.card_id)}
+                          className="text-red-500 hover:text-red-700 focus:outline-none"
+                          title="Delete Card"
+                        >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4M3 7h18"/>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4M3 7h18" />
                           </svg>
                         </button>
                       </td>

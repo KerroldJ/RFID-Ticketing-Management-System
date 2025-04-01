@@ -65,7 +65,7 @@ export const handleScanCardClick = (setCards) => {
                 openScanModal();
                 return;
             }
-            const cardsResponse = await axios.get(`${domain}/api/cards/`);
+            const cardsResponse = await axios.get(`${domain}/api/list-cards/`);
             const cardData = cardsResponse.data.find((card) => card.card_id === rfidCard);
             if (!cardData) {
                 throw new Error("Card not found.");
@@ -78,6 +78,7 @@ export const handleScanCardClick = (setCards) => {
                 minute: "2-digit",
                 hour12: true,
             });
+            
             const deactivateResponse = await axios.post(`${domain}/api/deactivate/${rfidCard}/`, {
                 deactivated_date: formattedDate,
                 deactivated_time: formattedTime,
@@ -107,7 +108,7 @@ export const handleScanCardClick = (setCards) => {
                 allowEscapeKey: false,
             });
 
-            const updatedCardsResponse = await axios.get(`${domain}/api/cards/`);
+            const updatedCardsResponse = await axios.get(`${domain}/api/list-cards/`);
             setCards(updatedCardsResponse.data);
 
             openScanModal();

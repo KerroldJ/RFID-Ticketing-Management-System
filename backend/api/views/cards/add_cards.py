@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from ...serializers import CardSerializer
-from ...utils import create_log
+from ...serializer.card_serializer import CardSerializer
+from ..logs.create_log import create_log
 
 @api_view(['POST'])
 def card_create(request):

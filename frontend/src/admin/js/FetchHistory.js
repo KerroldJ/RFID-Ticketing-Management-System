@@ -5,7 +5,7 @@ import { domain } from '../../utils';
 const useFetchCardLogs = (setHistoryData, setLoading, setError) => {
     useEffect(() => {
         axios
-            .get(`${domain}/api/card-logs/`)
+            .get(`${domain}/api/list-logs/`)
             .then((response) => {
                 setHistoryData(response.data || []);
                 setLoading(false);

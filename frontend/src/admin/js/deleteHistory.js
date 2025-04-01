@@ -27,7 +27,7 @@ const handleDeleteAll = async (setHistoryData) => {
     if (!password) return;
 
     try {
-        const response = await axios.delete(`${domain}/api/card-logs/`, {
+        const response = await axios.delete(`${domain}/api/delete-logs/`, {
             data: { password },
             headers: { 'Content-Type': 'application/json' }
         });

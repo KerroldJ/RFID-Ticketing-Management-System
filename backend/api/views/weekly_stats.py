@@ -5,7 +5,7 @@ from django.db.models.functions import TruncDay
 from django.db.models import Count
 from django.utils import timezone
 from datetime import timedelta
-from ..models import Log
+from ..models.logs import Log
 
 
 

@@ -1,10 +1,9 @@
 from django.utils import timezone
-from .models import Log
+from ...models.logs import Log
 
 def create_log(card_id, status, role=None, card_type=None):
     role = role or "Admin"
     card_type = card_type or "Unknown"
-
     try:
         current_time = timezone.localtime(timezone.now())
         log_entry = Log.objects.create(

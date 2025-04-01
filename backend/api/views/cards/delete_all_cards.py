@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from ...models import Card
+from ...models.cards import Card
 from django.contrib.auth import get_user_model
 
 
@@ -10,11 +10,9 @@ def card_delete_all(request):
     if request.method == 'DELETE':
         try:
             password = request.data.get('password')
-            
             if not password:
                 return Response({'error': 'Password is required'}, status=status.HTTP_400_BAD_REQUEST)
             user = get_user_model().objects.filter(is_superuser=True).first()
-
             if user:
                 if user.check_password(password):
                     if not Card.objects.exists():
