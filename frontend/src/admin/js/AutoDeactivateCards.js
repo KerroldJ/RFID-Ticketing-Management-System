@@ -6,7 +6,7 @@ const useAutoDeactivateCards = () => {
         const intervalId = setInterval(() => {
             const now = new Date();
             if (now.getHours() === 19 && now.getMinutes() === 0) {
-                fetch(`${domain}/api/deactivate_all_cards/`, {
+                fetch(`${domain}/api/autodeactivate_cards/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

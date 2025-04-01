@@ -88,8 +88,7 @@ const handleAddButtonClick = (setCards) => {
     }).then((result) => {
         if (result.isConfirmed) {
             const { card_id, status, type, office_name } = result.value;
-            axios
-                .post(`${domain}/api/cards/`, { card_id, status, type, office_name })
+            axios.post(`${domain}/api/create-cards/`, { card_id, status, type, office_name })
                 .then((response) => {
                     const card = response.data;
                     const formattedCard = {
@@ -102,16 +101,30 @@ const handleAddButtonClick = (setCards) => {
                         time: card.created_time,
                     };
                     console.log(`Formatted card: ${JSON.stringify(formattedCard)}`);
-
-                    fetch(`${domain}/api/cards/`)
+                    return fetch(`${domain}/api/list-cards/`)
                         .then((response) => response.json())
-                        .then((data) => setCards(data));
-
-                    Swal.fire("Added!", "Your card has been added.", "success");
-                })
-                .catch((error) => {
+                        .then((data) => {
+                            setCards(data);
+                            Swal.fire("Added!", "Your card has been added.", "success");
+                        });
+                }).catch((error) => {
                     console.error("Error:", error);
-                    Swal.fire("Error!", "Failed to add card.", "error");
+                    let errorMessage = "Failed to add card.";
+                    if (error.response) {
+                        if (error.response.status === 400) {
+                            const errorDetails = error.response.data;
+                            if (errorDetails.details) {
+                                errorMessage = "Invalid data: ";
+                                Object.keys(errorDetails.details).forEach(field => {
+                                    errorMessage += `${field}: ${errorDetails.details[field][0]} `;
+                                });
+                            }
+                        } else if (error.response.status === 500) {
+                            errorMessage = "Server error occurred while creating the card.";
+                        }
+                    }
+
+                    Swal.fire("Error!", errorMessage, "error");
                 });
         }
     });

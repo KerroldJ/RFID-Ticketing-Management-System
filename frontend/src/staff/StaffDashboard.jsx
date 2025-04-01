@@ -73,23 +73,24 @@ function StaffDashboard() {
   }, []);
 // ====================================================================== //
   return (
-    <div className="flex-1 bg-gray-100 w-full p-6">
-      <div className="grid grid-cols-3 gap-6 p-6">
-        <div className="bg-blue-600 text-white p-4 rounded-lg shadow-md text-center">
+    <div className="flex-1 w-full p-6">
+      
+      <div className="flex gap-10 items-center justify-center">
+        <div className="w-[300px] bg-blue-400 text-white p-4 rounded-lg text-center">
           <h3 className="text-xl font-semibold">Active Cards</h3>
           <p className="text-3xl font-bold">{cards.filter((card) => card.status === "Activated").length}</p>
         </div>
-        <div className="bg-red-600 text-white p-4 rounded-lg shadow-md text-center">
+        <div className="w-[300px] bg-rose-400 text-white p-4 rounded-lg text-center">
           <h3 className="text-xl font-semibold">Deactivated Cards</h3>
           <p className="text-3xl font-bold">{cards.filter((card) => card.status === "Deactivated").length}</p>
         </div>
-        <div className="bg-green-600 text-white p-4 rounded-lg shadow-md text-center">
+        <div className="w-[300px] bg-green-400 text-white p-4 rounded-lg text-center">
           <h3 className="text-xl font-semibold">Total Cards</h3>
           <p className="text-3xl font-bold">{cards.length}</p>
         </div>
       </div>
       <div className="flex gap-6 mt-10">
-        <div className="bg-white rounded-lg shadow-lg w-full h-[500px] max-w-[1200px] mx-auto p-6">
+        <div className="rounded-lg w-full h-[500px] max-w-[1200px] mx-auto p-6 border">
           <h2 className="text-xl font-bold text-center mb-4">Weekly Clients</h2>
           <div className="h-[400px] w-full">
             <Line data={data} options={options} />

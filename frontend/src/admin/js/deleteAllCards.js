@@ -7,8 +7,8 @@ const handleClearButtonClick = async (setCards) => {
         const { value: password } = await Swal.fire({
             title: 'Enter Admin Password',
             input: 'password',
-            inputLabel: 'Please enter the admin password',
             inputPlaceholder: 'Admin Password',
+            confirmButtonText: 'Login',
             showCancelButton: true,
             inputValidator: (value) => {
                 if (!value) {
@@ -20,8 +20,7 @@ const handleClearButtonClick = async (setCards) => {
         if (!password) {
             return;
         }
-
-        const response = await axios.delete(`${domain}/api/delete-cards/`, {
+        const response = await axios.delete(`${domain}/api/delete-all-card/`, {
             data: { password }
         });
 

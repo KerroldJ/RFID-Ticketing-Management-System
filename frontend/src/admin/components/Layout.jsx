@@ -17,12 +17,13 @@ function Layout() {
     return (
         <div className="flex h-screen flex-col">
             <div className="flex flex-1">
-                <div className="w-74 bg-gray-800 text-white">
+                <div className="w-74 border-r-2 border-slate-400">
                     <Sidebar />
                 </div>
                 <div className="flex flex-col flex-1">
                     <Header onLogout={handleLogout} />
-                    <div className="flex-1 bg-gray-100 p-6 relative">
+                    
+                    <div className="flex-1 p-6 relative">
                         <div className="absolute inset-0 z-20 flex items-center justify-center opacity-10 pointer-events-none">
                             <img src={Image} alt="Logo" className="w-[800px] h-[800px] object-contain" />
                         </div>
@@ -30,6 +31,7 @@ function Layout() {
                             <Outlet />
                         </div>
                     </div>
+
                     <div>
                         <Footer />
                     </div>

@@ -3,7 +3,7 @@ import { domain } from '../../utils';
 
 const useFetchCards = (setCards) => {
     useEffect(() => {
-        fetch(`${domain}/api/cards/`)
+        fetch(`${domain}/api/list-cards/`)
             .then((response) => response.json())
             .then((data) => setCards(data))
             .catch((error) => {

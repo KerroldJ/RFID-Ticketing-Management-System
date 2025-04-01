@@ -10,7 +10,6 @@ import StaffLayout from "./staff/components/StaffLayout";
 import StaffDashboard from "./staff/StaffDashboard";
 import ScanCards from "./staff/ScanCards";
 import StaffHistory from "./staff/StaffHistory";
-import StaffSetting from "./staff/StaffSetting";
 
 const getUserRole = () => {
   return localStorage.getItem('userRole');
@@ -61,7 +60,6 @@ function App() {
           <Route index element={<ProtectedRoute requiredRole="staff"><StaffDashboard/></ProtectedRoute>}/>
           <Route path="scan-card" element={<ProtectedRoute requiredRole="staff"><ScanCards /></ProtectedRoute>}/>
           <Route path="history" element={<ProtectedRoute requiredRole="staff"><StaffHistory /></ProtectedRoute>} />
-          <Route path="settings" element={<ProtectedRoute requiredRole="staff"><StaffSetting /></ProtectedRoute>} />
         </Route>
 
         {/* Catch-all route */}

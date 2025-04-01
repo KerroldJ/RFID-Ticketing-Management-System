@@ -4,11 +4,9 @@ import { domain } from '../../utils';
 
 const deactivateAllCards = async (setCards) => {
     try {
-        // Prompt for password authentication
         const { value: password } = await Swal.fire({
-            title: 'Admin Authentication',
+            title: 'Enter Admin Password',
             input: 'password',
-            inputLabel: 'Please enter your password',
             inputPlaceholder: 'Password',
             confirmButtonText: 'Login',
             showCancelButton: true,
@@ -19,9 +17,7 @@ const deactivateAllCards = async (setCards) => {
             }
         });
         if (!password) return;
-
-        // Send password to backend for validation and card deactivation
-        const response = await axios.post(`${domain}/api/all_cards_deactivate/`, {
+        const response = await axios.post(`${domain}/api/deactivate_all_cards/`, {
             password
         });
 
@@ -38,9 +34,7 @@ const deactivateAllCards = async (setCards) => {
                 text: response.data.message || 'No Regular Cards to Deactivate.',
             });
         }
-
-        // Fetch updated card data
-        const updatedResponse = await fetch(`${domain}/api/cards/`);
+        const updatedResponse = await fetch(`${domain}/api/list-cards/`);
         const updatedData = await updatedResponse.json();
         setCards(updatedData);
     } catch (error) {
